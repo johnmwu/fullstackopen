@@ -31,7 +31,12 @@ const App = () => {
       number: newNumber
     }
 
-    setPersons(persons.concat(personObject))
+    axios
+      .post('http://localhost:3001/persons', personObject)
+      .then(response => {
+        console.log(`added ${newName} to phonebook`)
+        setPersons(persons.concat(personObject))
+      })
   }
 
   const personsToShow = persons.filter(person => person.name.toLowerCase().includes(newFilter.toLowerCase()))
