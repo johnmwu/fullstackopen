@@ -1,4 +1,4 @@
-const FilterBox = ({ newFilter, handleFilterChange }) => {
+const Filter = ({ newFilter, handleFilterChange }) => {
   return (
     <div>
       filter shown with <input value={newFilter} onChange={handleFilterChange} />
@@ -6,5 +6,4 @@ const FilterBox = ({ newFilter, handleFilterChange }) => {
   )
 }
 
-console.log('hello before export filter')
-export default FilterBox
+export default Filter
