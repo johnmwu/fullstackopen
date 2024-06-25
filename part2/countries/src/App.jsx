@@ -20,7 +20,7 @@ function App() {
 
   return <>
     <CountryForm setSearch={setSearch}/>
-    <CountryResult search={search} countries={countries}/>
+    <CountryResult search={search} setSearch={setSearch} countries={countries}/>
   </>
 }
 

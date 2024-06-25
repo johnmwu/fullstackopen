@@ -1,4 +1,13 @@
-const CountryResult = ({ search, countries }) => {
+const CountryResult = ({ search, setSearch, countries }) => {
+
+  if (search === '') {
+    return (
+      <div>
+        Type into the searchbar
+      </div>
+    )
+  }
+
   const filtered = countries.filter(country => country.name.common.toLowerCase().includes(search.toLowerCase()))
   if (filtered.length === 0) {
     return (
@@ -16,7 +25,7 @@ const CountryResult = ({ search, countries }) => {
     return (
       <div>
         <ul>
-          {filtered.map(country => <li key={country.name.common}>{country.name.common}</li>)}
+          {filtered.map(country => <li key={country.name.common}>{country.name.common} <button onClick={() => setSearch(country.name.common)}>show</button></li>)}
         </ul>
       </div>
     )
