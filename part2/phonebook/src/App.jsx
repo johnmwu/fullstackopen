@@ -4,12 +4,16 @@ import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import axios from 'axios'
 import personService from './services/persons'
+import Message from './components/Message'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+
+  const [message, setMessage] = useState(null)
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     personService.getAll()
@@ -28,6 +32,14 @@ const App = () => {
         .then(response => {
           setPersons(persons.map(person => person.id === response.id ? response : person))
         })
+        .catch(error => {
+          setMessage(`Information of ${newName} has already been removed from server`)
+          setIsError(true)
+          setTimeout(() => {
+            setMessage(null)
+          }, 3000)
+          setPersons(persons.filter(person => person.id !== existingPerson.id))
+        })
       return
     }
   
@@ -40,6 +52,11 @@ const App = () => {
       .then(response => {
         console.log(`added ${newName} to phonebook`)
         setPersons(persons.concat(personObject))
+        setMessage(`Added ${newName}`)
+        setIsError(false)
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
       })
   }
 
@@ -59,6 +76,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Message message={message} />
 
       <Filter newFilter={newFilter} handleFilterChange={(event) => setNewFilter(event.target.value)}/>
 
