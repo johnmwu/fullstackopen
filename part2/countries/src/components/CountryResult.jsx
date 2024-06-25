@@ -1,3 +1,5 @@
+import Weather from "./Weather"
+
 const CountryResult = ({ search, setSearch, countries }) => {
 
   if (search === '') {
@@ -40,6 +42,8 @@ const CountryResult = ({ search, setSearch, countries }) => {
           {Object.values(filtered[0].languages).map(language => <li key={language}>{language}</li>)}
         </ul>
         <img src={filtered[0].flags.png} alt={filtered[0].name.common} height="100" />
+
+        <Weather country={filtered[0]} />
       </div>
     )
   }

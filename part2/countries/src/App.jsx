@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import CountryForm from './components/CountryForm'
 import CountryResult from './components/CountryResult'
+import Weather from './components/Weather'
 
 function App() {
   const [countries, setCountries] = useState([])
