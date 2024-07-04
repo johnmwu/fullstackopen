@@ -25,7 +25,7 @@ app.get('/api/persons', (request, response) => {
   Person.find({})
     .then(persons => { 
       response.json(persons) 
-      mongoose.connection.close()
+      // mongoose.connection.close()
     })
 })
 
@@ -72,14 +72,15 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  const person = {
-    id: generateId(),
+  const person = new Person({
     name: body.name,
     number: body.number
-  }
+  })
 
-  persons = persons.concat(person)
-  response.json(person)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+    // mongoose.connection.close()
+  })
 })
 
 
