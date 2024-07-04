@@ -1,0 +1,7 @@
+POST https://phonebook-backend-summer-wildflower-5174.fly.dev:3000/api/persons
+Content-Type: application/json
+
+{
+  "name": "New Person from POST",
+  "number": "12345"
+}
