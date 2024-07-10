@@ -34,7 +34,7 @@ const App = () => {
             return person.id === response.id ? response : person
           }))
         })
-        .catch(error => {
+        .catch(() => {
           setMessage(`Information of ${newName} has already been removed from server`)
           setIsError(true)
           setTimeout(() => {
@@ -60,6 +60,13 @@ const App = () => {
           setMessage(null)
         }, 3000)
       })
+      .catch(error => {
+        setMessage(error.response.data.error)
+        setIsError(true)
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
+      })
   }
 
   const handleDelete = (id) => {
@@ -79,7 +86,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Message message={message} />
+      <Message message={message} isError={isError} />
 
       <Filter newFilter={newFilter} handleFilterChange={(event) => setNewFilter(event.target.value)}/>
 
