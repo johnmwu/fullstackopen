@@ -30,7 +30,9 @@ const App = () => {
     if (existingPerson) {
       personService.update(existingPerson.id, {...existingPerson, number: newNumber})
         .then(response => {
-          setPersons(persons.map(person => person.id === response.id ? response : person))
+          setPersons(persons.map(person => {
+            return person.id === response.id ? response : person
+          }))
         })
         .catch(error => {
           setMessage(`Information of ${newName} has already been removed from server`)
@@ -51,7 +53,7 @@ const App = () => {
     personService.create(personObject)
       .then(response => {
         console.log(`added ${newName} to phonebook`)
-        setPersons(persons.concat(personObject))
+        setPersons(persons.concat(response))
         setMessage(`Added ${newName}`)
         setIsError(false)
         setTimeout(() => {
