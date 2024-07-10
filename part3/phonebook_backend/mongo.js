@@ -1,24 +1,6 @@
 const mongoose = require('mongoose')
+const Person = require('./models/person')
 
-if (process.argv.length<3) {
-  console.log('give password as argument')
-  process.exit(1)
-}
-
-const password = process.argv[2]
-
-url = `mongodb+srv://test:${password}@cluster0.q0ts0fz.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`
-
-mongoose.set('strictQuery',false)
-
-mongoose.connect(url)
-
-const personSchema = new mongoose.Schema({
-  name: String,
-  number: String
-})
-
-const Person = mongoose.model('Person', personSchema)
 
 if (process.argv.length === 3) {
   // print all entries

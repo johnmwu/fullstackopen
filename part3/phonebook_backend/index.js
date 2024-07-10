@@ -5,13 +5,6 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const Person = require('./models/person')
 
-const convertPerson = (person) => {
-  return {
-    id: person._id,
-    name: person.name,
-    number: person.number
-  }
-}
 
 const app = express()
 
@@ -31,15 +24,15 @@ app.use(morgan(function (tokens, req, res) {
 
 app.get('/api/persons', (request, response) => {
   Person.find({})
-    .then(persons => { 
-      response.json(persons.map(convertPerson)) 
+    .then(persons => {
+      response.json(persons)
       // mongoose.connection.close()
     })
 })
 
 app.get('/info', (request, response) => {
   Person.find({})
-    .then(persons => { 
+    .then(persons => {
       response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date()}</p>`)
       mongoose.connection.close()
     })
@@ -49,7 +42,7 @@ app.get('/api/persons/:id', (request, response) => {
   Person.findById(request.params.id)
     .then(person => {
       if (person) {
-        response.json(convertPerson(person))
+        response.json(person)
       } else {
         response.status(404).end()
       }
@@ -84,7 +77,7 @@ app.post('/api/persons', (request, response) => {
   })
 
   person.save().then(savedPerson => {
-    response.json(convertPerson(savedPerson))
+    response.json(savedPerson)
     // mongoose.connection.close()
   })
 })
@@ -99,7 +92,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updatedPerson => {
-      response.json(convertPerson(updatedPerson))
+      response.json(updatedPerson)
     })
     .catch(error => next(error))
 })
