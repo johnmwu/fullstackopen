@@ -1,31 +1,31 @@
 const config = require('./utils/config')
 const express = require('express')
+require('express-async-errors')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const Blog = require('./models/blog.js')
+const { errorHandler } = require('./utils/middleware')
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 
+console.log('connecting to', config.MONGODB_URI)
 mongoose.connect(config.MONGODB_URI)
 
-app.get('/api/blogs', (request, response) => {
-  Blog
+app.get('/api/blogs', async (request, response) => {
+  const blogs = await Blog
     .find({})
-    .then(blogs => {
-      response.json(blogs)
-    })
+  response.json(blogs)
 })
 
-app.post('/api/blogs', (request, response) => {
+app.post('/api/blogs', async (request, response) => {
   const blog = new Blog(request.body)
 
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
+  const savedBlog = await blog.save()
+  response.status(201).json(savedBlog)
 })
+
+app.use(errorHandler)
 
 module.exports = app
