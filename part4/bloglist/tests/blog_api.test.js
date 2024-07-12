@@ -119,6 +119,32 @@ test('missing url or title returns 400', async () => {
     .expect(400)
 })
 
+test('delete blog', async () => {
+  const blogsAtStart = await Blog.find({})
+  const blogToDelete = blogsAtStart[0].toJSON()
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await Blog.find({})
+  assert.equal(blogsAtEnd.length, initialBlogs.length - 1)
+})
+
+test('update blog', async () => {
+  const blogsAtStart = await Blog.find({})
+  const blogToUpdate = blogsAtStart[0].toJSON()
+  blogToUpdate.likes = 100
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(blogToUpdate)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await Blog.find({})
+  assert.equal(blogsAtEnd.length, initialBlogs.length)
+  assert.equal(blogsAtEnd[0].toJSON().likes, 100)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
