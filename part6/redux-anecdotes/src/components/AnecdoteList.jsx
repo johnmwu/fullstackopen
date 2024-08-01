@@ -1,7 +1,10 @@
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
 import { setFilter } from '../reducers/filterReducer'
 import { setNotification, removeNotification } from '../reducers/notificationReducer'
+import { set as setAnecdotes } from '../reducers/anecdoteReducer'
+import anecdoteService from '../services/anecdotes'
 
 const Filter = () => {
   const dispatch = useDispatch()
@@ -31,6 +34,12 @@ const AnecdoteList = () => {
       dispatch(removeNotification(`you voted '${anecdote.content}'`))
     }, 5000)
   }
+
+  useEffect(() => {
+    anecdoteService.getAll().then(anecdotes => dispatch(setAnecdotes(anecdotes))
+    )
+  }, [])
+    
 
   return (
     <div>
