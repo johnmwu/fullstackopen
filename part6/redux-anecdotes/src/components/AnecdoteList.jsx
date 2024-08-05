@@ -2,9 +2,8 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
 import { setFilter } from '../reducers/filterReducer'
-import { setNotification, removeNotification } from '../reducers/notificationReducer'
-import { set as setAnecdotes } from '../reducers/anecdoteReducer'
-import anecdoteService from '../services/anecdotes'
+import { setNotification } from '../reducers/notificationReducer'
+import { initialize as initializeAnecdotes } from '../reducers/anecdoteReducer'
 
 const Filter = () => {
   const dispatch = useDispatch()
@@ -23,21 +22,25 @@ const Filter = () => {
 }
 
 const AnecdoteList = () => {
-  const unsortedAnecdotes = useSelector(state => state.anecdotes.filter((a) => a.content.includes(state.filter)))
+  const unsortedAnecdotes = useSelector(state => {
+    // console.log(state)
+    return state.anecdotes.filter((a) => a.content.includes(state.filter))
+  })
   const anecdotes = unsortedAnecdotes.sort((a, b) => b.votes - a.votes)
   const dispatch = useDispatch()
 
   const handleClick = (anecdote) => {
     dispatch(vote(anecdote))
-    dispatch(setNotification(`you voted '${anecdote.content}'`))
-    setTimeout(() => {
-      dispatch(removeNotification(`you voted '${anecdote.content}'`))
-    }, 5000)
+    dispatch(setNotification(`you voted '${anecdote.content}'`, 5))
+    // setTimeout(() => {
+    //   dispatch(removeNotification(`you voted '${anecdote.content}'`))
+    // }, 5000)
   }
 
   useEffect(() => {
-    anecdoteService.getAll().then(anecdotes => dispatch(setAnecdotes(anecdotes))
-    )
+    // anecdoteService.getAll().then(anecdotes => dispatch(setAnecdotes(anecdotes))
+    // )
+    dispatch(initializeAnecdotes())
   }, [])
     
 
